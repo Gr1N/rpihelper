@@ -1,4 +1,6 @@
-.hg
+syntax: glob
+
+.git
 *.py[cod]
 
 # C extensions
