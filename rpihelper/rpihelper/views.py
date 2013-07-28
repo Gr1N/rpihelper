@@ -2,10 +2,19 @@
 
 from flask import Blueprint, render_template
 
+__all__ = (
+    'rpihelper',
+)
 
-rpihelper = Blueprint('rpihelper', __name__)
+
+rpihelper = Blueprint(
+    'rpihelper',
+    __name__,
+    template_folder='templates/rpihelper',
+    static_folder='static/rpihelper'
+)
 
 
-@rpihelper.route('/')
+@rpihelper.route('/', methods=('GET',))
 def index():
     return render_template('index.html')
