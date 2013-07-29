@@ -6,6 +6,7 @@ from rpihelper.utils import make_dir, INSTANCE_FOLDER_PATH
 
 __all__ = (
     'DefaultConfig',
+    'TestConfig',
 )
 
 

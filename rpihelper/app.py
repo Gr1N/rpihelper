@@ -4,7 +4,7 @@ import os
 
 from flask import Flask, render_template
 
-from rpihelper.config import DefaultConfig
+from rpihelper.config import DefaultConfig, TestConfig
 from rpihelper.rpihelper import rpihelper
 from rpihelper.utils import INSTANCE_FOLDER_PATH
 
@@ -18,7 +18,7 @@ DEFAULT_BLUEPRINTS = (
 )
 
 
-def create_app(config=None, app_name=None, blueprints=None):
+def create_app(app_name=None, blueprints=None, testing=False):
     if not app_name:
         app_name = DefaultConfig.PROJECT
 
@@ -26,7 +26,7 @@ def create_app(config=None, app_name=None, blueprints=None):
         blueprints = DEFAULT_BLUEPRINTS
 
     app = Flask(app_name, instance_path=INSTANCE_FOLDER_PATH, instance_relative_config=True)
-    configure_app(app, config)
+    configure_app(app, TestConfig if testing else DefaultConfig)
     configure_blueprints(app, blueprints)
     configure_extensions(app)
     configure_logging(app)
@@ -36,15 +36,12 @@ def create_app(config=None, app_name=None, blueprints=None):
     return app
 
 
-def configure_app(app, config=None):
+def configure_app(app, config):
     # http://flask.pocoo.org/docs/api/#configuration
-    app.config.from_object(DefaultConfig)
+    app.config.from_object(config)
 
     # http://flask.pocoo.org/docs/config/#instance-folders
     # app.config.from_pyfile('production.cfg', silent=True)
-
-    # if config:
-        # app.config.from_object(config)
 
     # Use instance folder instead of env variables to make deployment easier.
     #app.config.from_envvar('%s_APP_CONFIG' % DefaultConfig.PROJECT.upper(), silent=True)

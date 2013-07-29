@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 from flask.ext.script import Manager
 
 from rpihelper import create_app
@@ -10,9 +12,10 @@ manager = Manager(app)
 
 
 @manager.command
-def run():
-    """Run in local machine."""
-    app.run()
+@manager.option('-tm', '--testmodule', help='Provide test module')
+def test(testmodule='discover'):
+    """Run unit tests."""
+    os.system('python -m unittest %s' % testmodule)
 
 
 if __name__ == '__main__':
