@@ -2,14 +2,14 @@
 
 from flask import url_for
 
-from rpihelper.test import TestCase
+from rpihelper.test import ViewTestCase
 
 __all__ = (
-    'RPiHelperTests',
+    'RPiHelperIndexViewTests',
 )
 
 
-class RPiHelperTests(TestCase):
+class RPiHelperIndexViewTests(ViewTestCase):
     def test_get_ok(self):
         with self.app.test_request_context():
             response = self.client.get(url_for('rpihelper.index'))

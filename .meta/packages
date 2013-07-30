@@ -1,2 +1,4 @@
 Flask
 Flask-Script
+blinker
+psutil
