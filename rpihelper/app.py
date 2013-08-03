@@ -33,6 +33,7 @@ def create_app(app_name=None, blueprints=None, testing=False):
     configure_extensions(app)
     configure_logging(app)
     configure_template_filters(app)
+    configure_hook(app)
     configure_error_handlers(app)
 
     return app
@@ -93,6 +94,12 @@ def configure_logging(app):
     #app.logger.info('testing info.')
     #app.logger.warn('testing warn.')
     #app.logger.error('testing error.')
+
+
+def configure_hook(app):
+    @app.before_request
+    def before_request():
+        pass
 
 
 def configure_error_handlers(app):

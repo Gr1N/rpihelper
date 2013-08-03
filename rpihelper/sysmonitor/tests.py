@@ -15,9 +15,12 @@ class SysMonitorIndexViewTests(ViewTestCase):
             response = self.client.get(url_for('sysmonitor.index'))
             self.assertEqual(response.status_code, 200)
 
+            self.assertTrue(self.get_context_variable('boot_time'))
             self.assertTrue(self.get_context_variable('virtual_memory'))
             self.assertTrue(self.get_context_variable('swap_memory'))
             self.assertTrue(self.get_context_variable('cpu'))
+            self.assertTrue(self.get_context_variable('disks'))
+            self.assertTrue(self.get_context_variable('processes'))
 
     def test_post_not_allowed(self):
         with self.app.test_request_context():
