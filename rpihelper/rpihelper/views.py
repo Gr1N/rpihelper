@@ -10,11 +10,12 @@ __all__ = (
 rpihelper = Blueprint(
     'rpihelper',
     __name__,
-    template_folder='templates/rpihelper',
-    static_folder='static/rpihelper'
+    url_prefix='/',
+    template_folder='templates',
+    static_folder='static'
 )
 
 
 @rpihelper.route('/', methods=('GET',))
 def index():
-    return render_template('index.html')
+    return render_template('rpihelper/index.html')

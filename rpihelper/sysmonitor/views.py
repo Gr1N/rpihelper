@@ -13,11 +13,11 @@ sysmonitor = Blueprint(
     'sysmonitor',
     __name__,
     url_prefix='/sysmonitor',
-    template_folder='templates/sysmonitor',
-    static_folder='static/sysmonitor'
+    template_folder='templates',
+    static_folder='static'
 )
 
 
 @sysmonitor.route('/', methods=('GET',))
 def index():
-    return render_template('index.html', **get_system_info())
+    return render_template('sysmonitor/index.html', **get_system_info())
