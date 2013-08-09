@@ -30,7 +30,7 @@ class Config(BaseConfig):
         make_dir(LOG_FOLDER)
 
     def from_yaml(self, config_file):
-        env = os.environ.get('FLASK_ENV', 'development')
+        env = os.environ.get('FLASK_ENV', 'development').upper()
         self['ENVIRONMENT'] = env.lower()
 
         with open(config_file) as f:
