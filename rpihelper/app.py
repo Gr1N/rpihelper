@@ -2,9 +2,9 @@
 
 import os
 
-from flask import Flask, render_template
+from flask import render_template
 
-from rpihelper.config import DefaultConfig, TestConfig
+from rpihelper.config import Flask
 from rpihelper.rpihelper import rpihelper
 from rpihelper.sysmonitor import sysmonitor
 from rpihelper.utils import INSTANCE_FOLDER_PATH
@@ -14,21 +14,20 @@ __all__ = (
 )
 
 
+APP_NAME = 'rpihelper'
+
 DEFAULT_BLUEPRINTS = (
     rpihelper,
     sysmonitor,
 )
 
 
-def create_app(app_name=None, blueprints=None, testing=False):
-    if not app_name:
-        app_name = DefaultConfig.PROJECT
-
+def create_app(blueprints=None, testing=False):
     if not blueprints:
         blueprints = DEFAULT_BLUEPRINTS
 
-    app = Flask(app_name, instance_path=INSTANCE_FOLDER_PATH, instance_relative_config=True)
-    configure_app(app, TestConfig if testing else DefaultConfig)
+    app = Flask(APP_NAME, instance_path=INSTANCE_FOLDER_PATH, instance_relative_config=True)
+    configure_app(app)
     configure_blueprints(app, blueprints)
     configure_extensions(app)
     configure_logging(app)
@@ -39,15 +38,12 @@ def create_app(app_name=None, blueprints=None, testing=False):
     return app
 
 
-def configure_app(app, config):
-    # http://flask.pocoo.org/docs/api/#configuration
-    app.config.from_object(config)
-
-    # http://flask.pocoo.org/docs/config/#instance-folders
-    # app.config.from_pyfile('production.cfg', silent=True)
-
-    # Use instance folder instead of env variables to make deployment easier.
-    #app.config.from_envvar('%s_APP_CONFIG' % DefaultConfig.PROJECT.upper(), silent=True)
+def configure_app(app):
+    config_file = os.environ.get(
+        'FLASK_CONFIG_FILE',
+        '%s/config_local.yaml' % app.root_path
+    )
+    app.config.from_yaml(config_file)
 
 
 def configure_extensions(app):

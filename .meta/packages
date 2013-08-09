@@ -2,3 +2,4 @@ Flask
 Flask-Script
 blinker
 psutil
+PyYAML

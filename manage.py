@@ -15,6 +15,7 @@ manager = Manager(app)
 @manager.option('-tm', '--testmodule', help='Provide test module')
 def test(testmodule='discover'):
     """Run unit tests."""
+    os.environ['FLASK_ENV'] = 'testing'
     os.system('python -m unittest %s' % testmodule)
 
 
