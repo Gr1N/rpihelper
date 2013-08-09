@@ -6,6 +6,7 @@ from flask import render_template
 
 from rpihelper.config import Flask
 from rpihelper.rpihelper import rpihelper
+from rpihelper.services import services
 from rpihelper.sysmonitor import sysmonitor
 from rpihelper.utils import INSTANCE_FOLDER_PATH
 
@@ -18,6 +19,7 @@ APP_NAME = 'rpihelper'
 
 DEFAULT_BLUEPRINTS = (
     rpihelper,
+    services,
     sysmonitor,
 )
 

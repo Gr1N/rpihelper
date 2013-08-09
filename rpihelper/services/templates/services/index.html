@@ -1,0 +1,14 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    <h1>Services</h1>
+    {% for service in services %}
+        <h2>{{ service.name }}</h2>
+        <small>{{ service.description }}</small>
+        <p>
+            <a href="{{ service.url }}">{{ service.url }}</a>
+        </p>
+    {% else %}
+        <p>No services</p>
+    {% endfor %}
+{% endblock %}
