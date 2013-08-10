@@ -1,14 +1,31 @@
 {% extends 'layouts/base.html' %}
 
+{% block title %}Services{% endblock %}
+
 {% block content %}
-    <h1>Services</h1>
-    {% for service in services %}
-        <h2>{{ service.name }}</h2>
-        <small>{{ service.description }}</small>
-        <p>
-            <a href="{{ service.url }}">{{ service.url }}</a>
-        </p>
+    <h2>Services</h2>
+    {% if services -%}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in services -%}
+            <tr>
+                <td>{{ service.name }}</td>
+                <td>{{ service.description }}</td>
+                <td><a href="{{ service.url }}">{{ service.url }}</a></td>
+            </tr>
+            {%- endfor %}
+        </tbody>
+    </table>
     {% else %}
-        <p>No services</p>
-    {% endfor %}
+    <div class="alert alert-info">
+        <strong>Ops!</strong> Services not found...
+    </div>
+    {%- endif %}
 {% endblock %}

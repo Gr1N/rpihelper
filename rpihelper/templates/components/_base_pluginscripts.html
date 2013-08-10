@@ -1,0 +1,7 @@
+{% if config.DEBUG -%}
+<script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/jquery/jquery-2.0.3.js') }}"></script>
+<script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/bootstrap/bootstrap.js') }}"></script>
+{% else %}
+<script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/jquery/jquery-2.0.3.min.js') }}"></script>
+<script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/bootstrap/bootstrap.min.js') }}"></script>
+{%- endif %}

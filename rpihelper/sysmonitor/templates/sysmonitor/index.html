@@ -1,11 +1,80 @@
 {% extends 'layouts/base.html' %}
 
+{% block title %}System monitor{% endblock %}
+
+{% macro memory_block(title, memory) -%}
+    <h3>{{ title }}:</h3>
+    <p><strong>Total:</strong> {{ memory.total|int }}Mb; <strong>Used:</strong> {{ memory.used|int }}Mb</p>
+    <div class="progress progress-striped">
+        <div class="progress-bar progress-bar-info" style="width: {{ memory.percent }}%"></div>
+    </div>
+{% endmacro %}
+
 {% block content %}
-    <h1>SysMonitor</h1>
-    <p>{{ boot_time }}</p>
-    <p>{{ virtual_memory }}</p>
-    <p>{{ swap_memory }}</p>
-    <p>{{ cpu }}</p>
-    <p>{{ disks }}</p>
-    <p>{{ processes }}</p>
+    <h2>System monitor</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h3>Uptime:</h3>
+            <p><strong>Unix timestamp:</strong> {{ boot_time.timestamp }}</p>
+            <p><strong>Days:</strong> {{ boot_time.days }}</p>
+        </div>
+        <div class="col-lg-6">
+            <h3>CPU:</h3>
+            {% for c in cpu -%}
+                <div class="progress progress-striped">
+                    <div class="progress-bar progress-bar-info" style="width: {{ c }}%"></div>
+                </div>
+            {%- endfor %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            {{ memory_block('RAM', virtual_memory) }}
+        </div>
+        <div class="col-lg-6">
+            {{ memory_block('SWAP', swap_memory) }}
+        </div>
+    </div>
+
+    <h3>Disks:</h3>
+    {% for disk in disks -%}
+        <p><strong>Mountpoint:</strong> {{ disk.mountpoint }}; <strong>Total:</strong> {{ disk.total|int }}Gb; <strong>Used:</strong> {{ disk.used|int }}Gb</p>
+        <div class="progress progress-striped">
+            <div class="progress-bar progress-bar-info" style="width: {{ disk.percent }}%"></div>
+        </div>
+    {%- endfor %}
+
+    <h3>Processes:
+        {% for s in processes[1] %}
+            <span class="label label-default">{{ s }}: {{ processes[1][s] }}</span>
+        {% endfor %}
+    </h3>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>PID</th>
+                <th>User</th>
+                <th>NI</th>
+                <th>CPU%</th>
+                <th>MEM%</th>
+                <th>Time+</th>
+                <th>Command</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for process in processes[0] -%}
+            <tr>
+                <td>{{ process.pid }}</td>
+                <td>{{ process.username }}</td>
+                <td>{{ process.nice }}</td>
+                <td>{{ '%0.2f'| format(process.cpu_percent|float) }}</td>
+                <td>{{ '%0.2f'| format(process.memory_percent|float) }}</td>
+                <td>{% if process.cpu_times.system %}{{ '%0.2f'| format(process.cpu_times.system|float) }}{% endif %}</td>
+                <td>{{ process.name }}</td>
+            </tr>
+            {%- endfor %}
+        </tbody>
+    </table>
 {% endblock %}

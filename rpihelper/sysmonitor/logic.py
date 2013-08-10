@@ -37,20 +37,22 @@ def get_memory_data(memory):
 
 def get_cpu_data():
     cpu_data = []
-    for cpu_num, perc in enumerate(psutil.cpu_percent(interval=0, percpu=True)):
-        cpu_data.append((cpu_num, perc))
+    for perc in psutil.cpu_percent(interval=0, percpu=True):
+        cpu_data.append(perc)
     return cpu_data
 
 
 def get_disk_data():
+    to_gb = lambda b: b / 1024 / 1024 / 1024
+
     disk_data = []
     for p in psutil.disk_partitions():
         disk_usage = psutil.disk_usage(p.mountpoint)
         disk_data.append({
             'mountpoint': p.mountpoint,
             'percent': disk_usage.percent,
-            'total': disk_usage.total,
-            'used': disk_usage.used,
+            'total': to_gb(disk_usage.total),
+            'used': to_gb(disk_usage.used),
         })
     return disk_data
 

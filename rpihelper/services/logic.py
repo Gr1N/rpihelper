@@ -8,4 +8,4 @@ __all__ = (
 
 
 def get_services():
-    return current_app.config['SERVICES']
+    return current_app.config.get('SERVICES', [])
