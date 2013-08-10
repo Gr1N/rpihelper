@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, current_app
+from flask import Blueprint, render_template
+
+from rpihelper.services.logic import get_services
 
 __all__ = (
     'services',
@@ -19,5 +21,5 @@ services = Blueprint(
 @services.route('/', methods=('GET',))
 def index():
     return render_template('services/index.html', **{
-        'services': current_app.config['SERVICES'],
+        'services': get_services(),
     })
