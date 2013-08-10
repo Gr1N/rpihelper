@@ -43,7 +43,7 @@ def create_app(blueprints=None, testing=False):
 def configure_app(app):
     config_file = os.environ.get(
         'FLASK_CONFIG_FILE',
-        '%s/config_local.yaml' % app.root_path
+        '%s/config_local.yaml' % app.config['PROJECT_ROOT']
     )
     app.config.from_yaml(config_file)
 

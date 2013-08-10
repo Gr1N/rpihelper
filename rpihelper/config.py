@@ -21,8 +21,6 @@ class Config(BaseConfig):
     def __init__(self, *args, **kwargs):
         super(Config, self).__init__(*args, **kwargs)
 
-        # Get app root path, also can use flask.root_path.
-        # ../../config.py
         self['PROJECT_ROOT'] = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
         LOG_FOLDER = os.path.join(INSTANCE_FOLDER_PATH, 'logs')
