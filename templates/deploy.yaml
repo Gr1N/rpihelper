@@ -1,0 +1,19 @@
+__shared:
+    PYTHON: 'python3'
+    admin: grin.minsk@gmail.com
+    root: /srv/http/
+    httpd_log_dir: '/var/log/httpd'
+    nginx_log_dir: '/var/log/nginx'
+    configurations:
+        - app/app.wsgi
+        - conf/rpihelper/config.yaml
+        - conf/httpd/vhost.conf
+        - conf/nginx/app.conf
+        - conf/nginx/vhost.conf
+rpihelper:
+    home: /srv/http/rpihelper/
+    pipgit: git+git://github.com/Gr1N/rpihelper.git
+    http:
+        host: 192.168.1.7
+        port: 8080
+        port_fe: 80

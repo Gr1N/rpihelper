@@ -1,0 +1,28 @@
+COMMON: &common
+    PROJECT: RPiHelper
+    DEBUG: False
+    TESTING: False
+    SECRET_KEY: insecure
+
+    SERVICES: []
+
+DEVELOPMENT: &development
+    <<: *common
+    DEBUG: True
+
+    SERVICES:
+    - {
+        name: transmisson,
+        description: 'Torrent web interface',
+        url: '/transmission/web/'
+      }
+    - {
+        name: vsftpd,
+        description: 'FTP web interface',
+        url: 'ftp://192.168.1.7/'
+      }
+
+TESTING: &testing
+    <<: *development
+    TESTING: True
+    CSRF_ENABLED: False
