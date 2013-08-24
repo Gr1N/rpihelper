@@ -71,7 +71,14 @@ def get_processes_data():
         except psutil.NoSuchProcess:
             pass
         else:
-            processes.append(p_dict)
+            processes.append({
+                k: (dict(v.__dict__) if isinstance(v, (
+                    psutil._common.nt_meminfo,
+                    psutil._common.nt_cputimes,
+                )) else (str(v) if isinstance(v, (
+                    psutil._common.constant,
+                )) else v )) for k, v in p_dict.items()
+            })
 
     # return processes sorted by CPU percent usage
     try:

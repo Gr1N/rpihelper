@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, jsonify
 
 from rpihelper.sysmonitor.logic import get_system_info
 
@@ -20,4 +20,9 @@ sysmonitor = Blueprint(
 
 @sysmonitor.route('/', methods=('GET',))
 def index():
-    return render_template('sysmonitor/index.html', **get_system_info())
+    return render_template('sysmonitor/index.html')
+
+
+@sysmonitor.route('/system_info/', methods=('POST',))
+def system_info():
+    return jsonify(status='ok', data=get_system_info())

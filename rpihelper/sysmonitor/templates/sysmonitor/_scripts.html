@@ -1,0 +1,8 @@
+<script type="text/javascript">
+    window.Settings = window.Settings || {};
+    window.Settings.SysMonitor = {
+        systemInfoUrl: "{{ url_for('sysmonitor.system_info') }}"
+    };
+</script>
+
+<script type="text/javascript" charset="utf-8" src="{{ url_for('sysmonitor.static', filename='sysmonitor/js/sysmonitor.js') }}"></script>

@@ -5,11 +5,11 @@ from flask import url_for
 from rpihelper.test import ViewTestCase
 
 __all__ = (
-    'ServicesIndexViewTests',
+    'IndexViewTests',
 )
 
 
-class ServicesIndexViewTests(ViewTestCase):
+class IndexViewTests(ViewTestCase):
     def test_get_ok(self):
         with self.app.test_request_context():
             response = self.client.get(url_for('services.index'))

@@ -9,11 +9,11 @@
     <title>{% block title %}{% endblock %} - RPi Helper</title>
 
     {% if config.DEBUG -%}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='plugins/css/bootstrap/bootstrap.css') }}">
     {% else %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='plugins/css/bootstrap/bootstrap.min.css') }}">
     {%- endif %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base/css/style.css') }}">
 </head>
 
 <body>
@@ -27,5 +27,9 @@
 
     {% include 'components/_base_pluginscripts.html' %}
     {% block extra_pluginscripts %}{% endblock %}
+    {% include 'components/_base_scripts.html' %}
+    {% block extra_scripts %}{% endblock %}
+
+    {% block extra_templates %}{% endblock %}
 </body>
 </html>
