@@ -17,13 +17,15 @@
 </head>
 
 <body>
-    <div class="container-narrow">
-        {% include 'components/_header.html' %}
+    <div class="container-main">
+        <div class="container-narrow">
+            {% include 'components/_header.html' %}
 
-        {% block content %}{% endblock %}
-
-        {% include 'components/_footer.html' %}
+            {% block content %}{% endblock %}
+        </div>
     </div>
+
+    {% include 'components/_footer.html' %}
 
     {% include 'components/_base_pluginscripts.html' %}
     {% block extra_pluginscripts %}{% endblock %}
