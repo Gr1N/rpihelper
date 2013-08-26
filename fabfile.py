@@ -112,7 +112,7 @@ def ensure_layout(home):
 def deploy_project_package(home, config):
     with cd(home):
         with prefix('source %s' % VIRTUALENV_ACTIVATE):
-            run('pip install %s' % config['app']['pipgit'])
+            run('pip install -U %s' % config['app']['pipgit'])
 
 
 def deploy_configurations(home, config):

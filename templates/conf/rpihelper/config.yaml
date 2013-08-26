@@ -12,7 +12,7 @@ DEVELOPMENT: &development
 
     SERVICES:
     - {
-        name: transmisson,
+        name: transmission,
         description: 'Torrent web interface',
         url: '/transmission/web/'
       }
