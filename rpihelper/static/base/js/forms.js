@@ -75,7 +75,7 @@
                         $.ajax({
                             type: form.attr('method') || 'post',
                             url:  params.action || form.attr('action'),
-                            data: form.serializeArray(),
+                            data: params.data || form.serializeArray(),
                             dataType: 'json',
                             context: params.context,
                             success: onRequestSuccess,

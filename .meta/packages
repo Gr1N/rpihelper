@@ -1,5 +1,6 @@
 Flask
 Flask-Script
+Flask-WTF
 blinker
 psutil
 PyYAML

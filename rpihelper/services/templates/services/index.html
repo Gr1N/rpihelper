@@ -5,12 +5,13 @@
 {% block content %}
     <h2>Services</h2>
     {% if services -%}
-    <table class="table table-hover">
+    <table id="js-services-content" class="table table-hover">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Link</th>
+                <th>Commands</th>
             </tr>
         </thead>
         <tbody>
@@ -19,6 +20,12 @@
                 <td>{{ service.name }}</td>
                 <td>{{ service.description }}</td>
                 <td><a href="{{ service.url }}">{{ service.url }}</a></td>
+                <td>
+                    <button type="button" class="btn btn-default js-services-call-command"
+                            data-service="{{ service.name }}" data-command="start">Start</button>
+                    <button type="button" class="btn btn-default js-services-call-command"
+                            data-service="{{ service.name }}" data-command="stop">Stop</button>
+                </td>
             </tr>
             {%- endfor %}
         </tbody>
@@ -28,4 +35,8 @@
         <strong>Ops!</strong> Services not found...
     </div>
     {%- endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+    {% include 'services/_scripts.html' %}
 {% endblock %}

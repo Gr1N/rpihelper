@@ -1,0 +1,8 @@
+<script type="text/javascript">
+    window.Settings = window.Settings || {};
+    window.Settings.Services = {
+        sendServiceCommandUrl: "{{ url_for('services.send_service_command') }}"
+    };
+</script>
+
+<script type="text/javascript" charset="utf-8" src="{{ url_for('services.static', filename='services/js/services.js') }}"></script>

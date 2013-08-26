@@ -2,6 +2,8 @@
 
 import os
 
+from flask_wtf.csrf import CsrfProtect
+
 from flask import render_template
 
 from rpihelper.config import Flask
@@ -49,7 +51,8 @@ def configure_app(app):
 
 
 def configure_extensions(app):
-    pass
+    csrf = CsrfProtect()
+    csrf.init_app(app)
 
 
 def configure_blueprints(app, blueprints):

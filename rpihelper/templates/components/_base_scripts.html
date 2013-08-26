@@ -1,2 +1,16 @@
+<script type="text/javascript">
+(function(settings, $, window, undefined) {
+    var csrftoken = $('meta[name=csrf-token]').attr('content');
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken);
+            }
+        }
+    });
+})(window.Settings || {}, jQuery, window);
+</script>
+
 <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='base/js/application.js') }}"></script>
 <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='base/js/forms.js') }}"></script>

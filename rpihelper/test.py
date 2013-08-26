@@ -2,7 +2,7 @@
 
 import unittest
 
-from flask import template_rendered
+from flask import template_rendered, url_for
 
 from rpihelper import create_app
 
@@ -16,6 +16,8 @@ class ContextVariableDoesNotExist(Exception):
 
 
 class ViewTestCase(unittest.TestCase):
+    view_rule = None
+
     def __call__(self, result=None):
         self.templates = []
         template_rendered.connect(self._add_template)
@@ -30,6 +32,14 @@ class ViewTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app(testing=True)
         self.client = self.app.test_client()
+
+    def url_for(self, rule):
+        with self.app.test_request_context():
+            return url_for(rule)
+
+    @property
+    def view_url(self):
+        return self.url_for(self.view_rule)
 
     def get_context_variable(self, name):
         for template, context in self.templates:
