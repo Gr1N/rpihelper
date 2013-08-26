@@ -20,6 +20,8 @@
         getSystemInfo: function() {
             var onSuccess = _.bind(function(response) {
                 this.setTemplate(this.systemInfoTemplateSelector, response.data);
+
+                _.delay(_.bind(this.getSystemInfo, this), 2000);
             }, this);
 
             Application.trigger('submit-form-ajax', {
@@ -28,8 +30,6 @@
                     success: onSuccess
                 }
             });
-
-            _.delay(_.bind(this.getSystemInfo, this), 2000);
         }
     });
 
