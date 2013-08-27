@@ -1,16 +1,49 @@
 # -*- coding: utf-8 -*-
 
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from flask import json
 
-from rpihelper.services.logic import SystemctlCommands
-from rpihelper.test import ViewTestCase
+from rpihelper.services.logic import (
+    SystemctlCommands, SystemctlStatuses,
+    systemctl_ssr_command, systemctl_status_command,
+)
+from rpihelper.services.views import ERR_EXECUTE_COMMAND
+from rpihelper.test import TestCase, ViewTestCase
 
 __all__ = (
     'IndexViewTests',
-    'SendServiceCommandTests',
+    'SendServiceCommandViewTests',
+
+    'SystemctlSSRCommandLogicTests',
+    'SystemctlStatusCommandLogicTests',
 )
+
+
+SYSTEMCTL_SSR_ERROR_OUTPUT = """
+Failed to issue method call: Unit tran.service not loaded.
+"""
+SYSTEMCTL_STATUS_INACTIVE_OUTPUT = """
+transmission.service - Transmission BitTorrent Daemon
+Loaded: loaded (/usr/lib/systemd/system/transmission.service; enabled)
+Drop-In: /etc/systemd/system/transmission.service.d
+       └─user.conf
+Active: inactive (dead) since Mon 2013-08-26 21:07:36 FET; 27min ago
+Process: 5290 ExecStart=/usr/bin/transmission-daemon -f --log-error (code=exited, status=0/SUCCESS)
+"""
+SYSTEMCTL_STATUS_ACTIVE_OUTPUT = """
+transmission.service - Transmission BitTorrent Daemon
+Loaded: loaded (/usr/lib/systemd/system/transmission.service; enabled)
+Drop-In: /etc/systemd/system/transmission.service.d
+       └─user.conf
+Active: active (running) since Mon 2013-08-26 21:07:36 FET; 27min ago
+Process: 5290 ExecStart=/usr/bin/transmission-daemon -f --log-error (code=exited, status=0/SUCCESS)
+"""
+SYSTEMCTL_STATUS_ERROR_OUTPUT = """
+transmissio.service
+Loaded: error (Reason: No such file or directory)
+Active: inactive (dead)
+"""
 
 
 class IndexViewTests(ViewTestCase):
@@ -27,7 +60,7 @@ class IndexViewTests(ViewTestCase):
         self.assertEqual(response.status_code, 405)
 
 
-class SendServiceCommandTests(ViewTestCase):
+class SendServiceCommandViewTests(ViewTestCase):
     view_rule = 'services.send_service_command'
 
     def patch_services(self):
@@ -70,7 +103,7 @@ class SendServiceCommandTests(ViewTestCase):
             errors = data['errors']
             self.assertIn('service', errors)
 
-    @patch('rpihelper.services.views.call_command', new=MagicMock())  # TODO: remove this patch and run tests
+    @patch('rpihelper.services.views.systemctl_ssr_command', new=lambda *args, **kwargs: False)
     def test_post_form_valid(self):
         with self.patch_services():
             response = self.client.post(self.view_url, data={
@@ -80,3 +113,60 @@ class SendServiceCommandTests(ViewTestCase):
 
             data = json.loads(response.data)
             self.assertEqual(data['status'], 'ok')
+
+    @patch('rpihelper.services.views.systemctl_ssr_command', new=lambda *args, **kwargs: True)
+    def test_post_form_valid_error_while_executing_command(self):
+        with self.patch_services():
+            command = SystemctlCommands.STOP
+            service = 'test1'
+
+            response = self.client.post(self.view_url, data={
+                'command': command,
+                'service': service,
+            })
+
+            data = json.loads(response.data)
+            self.assertEqual(data['status'], 'error')
+            self.assertEqual(data['error'], ERR_EXECUTE_COMMAND % (command, service))
+
+
+class SystemctlCommandLogicMixin(object):
+    def patch_getoutput(self, output):
+        return patch(
+            'rpihelper.services.logic.getoutput',
+            new=lambda *args, **kwargs: output
+        )
+
+
+class SystemctlSSRCommandLogicTests(TestCase, SystemctlCommandLogicMixin):
+    def _test_ssr(self, output, expected_error=False):
+        assertMethod = self.assertTrue if expected_error else self.assertFalse
+
+        with self.patch_getoutput(output):
+            error = systemctl_ssr_command('command', 'service')
+            assertMethod(error)
+
+    def test_no_error(self):
+        self._test_ssr('')
+
+    def test_error(self):
+        self._test_ssr(SYSTEMCTL_SSR_ERROR_OUTPUT, expected_error=True)
+
+
+class SystemctlStatusCommandLogicTests(TestCase, SystemctlCommandLogicMixin):
+    def _test_status(self, output, expected_status):
+        with self.patch_getoutput(output):
+            status = systemctl_status_command('service')
+            self.assertEqual(status, expected_status)
+
+    def test_status_active(self):
+        self._test_status(SYSTEMCTL_STATUS_ACTIVE_OUTPUT, SystemctlStatuses.ACTIVE)
+
+    def test_status_inactive(self):
+        self._test_status(SYSTEMCTL_STATUS_INACTIVE_OUTPUT, SystemctlStatuses.INACTIVE)
+
+    def test_status_error(self):
+        self._test_status(SYSTEMCTL_STATUS_ERROR_OUTPUT, SystemctlStatuses.INACTIVE)
+
+    def test_no_output(self):
+        self._test_status('', SystemctlStatuses.UNKNOWN)

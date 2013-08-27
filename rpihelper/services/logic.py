@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from subprocess import call
+from subprocess import getoutput
+import re
 
 from flask import current_app
 
 __all__ = (
     'SystemctlCommands',
+    'SystemctlStatuses',
 
     'get_services',
-    'call_command',
+
+    'systemctl_ssr_command',
+    'systemctl_status_command',
 )
 
 
@@ -18,10 +22,44 @@ class SystemctlCommands(object):
     RESTART = 'restart'
 
 
+class SystemctlStatuses(object):
+    ACTIVE = 'active'
+    INACTIVE = 'inactive'
+
+    UNKNOWN = 'unknown'
+
+
 def get_services():
     return current_app.config.get('SERVICES', ())
 
 
-def call_command(command, service):
-    # TODO: docstring, fix code
-    call(['sudo', 'systemctl', command, service])
+def systemctl_ssr_command(command, service, with_sudo=True):
+    """
+    Execute `systemctl start/stop/restart <service_name>`.
+    If output returned we think that this is error.
+
+    TODO: pass `with_sudo` parameter via app config.
+    """
+    cmd = 'systemctl %s %s' % (command, service)
+    cmd = 'sudo %s' % cmd if with_sudo else cmd
+
+    output = getoutput(cmd)
+    return bool(output)
+
+
+def systemctl_status_command(service, with_sudo=True):
+    """
+    Check service status with `systemctl status <service_name>`.
+
+    TODO: pass `with_sudo` parameter via app config.
+    """
+    cmd = 'systemctl status %s' % service
+    cmd = 'sudo %s' % cmd if with_sudo else cmd
+
+    output = getoutput(cmd)
+    match = re.search(r'(?<=Active: )\w+', output)
+
+    if not match:
+        return SystemctlStatuses.UNKNOWN
+
+    return match.group(0)

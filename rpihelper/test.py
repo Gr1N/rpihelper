@@ -1,21 +1,27 @@
 # -*- coding: utf-8 -*-
 
-import unittest
+from unittest import TestCase as _TestCase
 
 from flask import template_rendered, url_for
 
 from rpihelper import create_app
 
 __all__ = (
+    'TestCase',
     'ViewTestCase',
 )
+
+
+class TestCase(_TestCase):
+    def setUp(self):
+        self.app = create_app(testing=True)
 
 
 class ContextVariableDoesNotExist(Exception):
     pass
 
 
-class ViewTestCase(unittest.TestCase):
+class ViewTestCase(TestCase):
     view_rule = None
 
     def __call__(self, result=None):
@@ -30,7 +36,7 @@ class ViewTestCase(unittest.TestCase):
         self.templates.append((template, context))
 
     def setUp(self):
-        self.app = create_app(testing=True)
+        super(ViewTestCase, self).setUp()
         self.client = self.app.test_client()
 
     def url_for(self, rule):
