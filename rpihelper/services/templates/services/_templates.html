@@ -1,0 +1,11 @@
+<script type="text/template" id="js-tmpl-services-service-commands-active">
+    <button type="button" class="btn btn-default btn-info js-services-call-command"
+            data-service="<%= service %>" data-command="restart">Restart</button>
+    <button type="button" class="btn btn-default btn-danger js-services-call-command"
+            data-service="<%= service %>" data-command="stop">Stop</button>
+</script>
+
+<script type="text/template" id="js-tmpl-services-service-commands-inactive">
+    <button type="button" class="btn btn-default btn-success js-services-call-command"
+            data-service="<%= service %>" data-command="start">Start</button>
+</script>

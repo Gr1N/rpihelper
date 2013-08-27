@@ -3,7 +3,7 @@
 from flask import Blueprint, render_template, jsonify
 
 from rpihelper.services.forms import ServicesForm
-from rpihelper.services.logic import get_services, systemctl_ssr_command
+from rpihelper.services.logic import get_services_with_status, systemctl_ssr_command
 
 __all__ = (
     'ERR_EXECUTE_COMMAND',
@@ -27,7 +27,7 @@ services = Blueprint(
 @services.route('/', methods=('GET',))
 def index():
     return render_template('services/index.html', **{
-        'services': get_services(),
+        'services': get_services_with_status(),
     })
 
 

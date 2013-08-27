@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from flask import json
 
@@ -49,6 +49,7 @@ Active: inactive (dead)
 class IndexViewTests(ViewTestCase):
     view_rule = 'services.index'
 
+    @patch('rpihelper.services.logic.systemctl_status_command', new=MagicMock())
     def test_get_ok(self):
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 200)

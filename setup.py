@@ -10,7 +10,7 @@ with open('.meta/packages') as reqs:
 
 setup(
     name='rpihelper',
-    version='0.0.2a',
+    version='0.0.2b',
     author='Nikita Grishko',
     author_email='grin.minsk@gmail.com',
     url='https://github.com/Gr1N/rpihelper',

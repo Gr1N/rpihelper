@@ -10,6 +10,7 @@ __all__ = (
     'SystemctlStatuses',
 
     'get_services',
+    'get_services_with_status',
 
     'systemctl_ssr_command',
     'systemctl_status_command',
@@ -31,6 +32,15 @@ class SystemctlStatuses(object):
 
 def get_services():
     return current_app.config.get('SERVICES', ())
+
+
+def get_services_with_status():
+    services = get_services()
+
+    for service in services:
+        service['status'] = systemctl_status_command(service['name'])
+
+    return services
 
 
 def systemctl_ssr_command(command, service, with_sudo=True):

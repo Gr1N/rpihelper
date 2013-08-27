@@ -2,6 +2,18 @@
 
 {% block title %}Services{% endblock %}
 
+{% macro commands_active(service_name) -%}
+    <button type="button" class="btn btn-default btn-info js-services-call-command"
+            data-service="{{ service_name }}" data-command="restart">Restart</button>
+    <button type="button" class="btn btn-default btn-danger js-services-call-command"
+            data-service="{{ service_name }}" data-command="stop">Stop</button>
+{%- endmacro %}
+
+{% macro commands_inactive(service_name) -%}
+    <button type="button" class="btn btn-default btn-success js-services-call-command"
+            data-service="{{ service_name }}" data-command="start">Start</button>
+{%- endmacro %}
+
 {% block content %}
     <h2>Services</h2>
     {% if services -%}
@@ -16,15 +28,16 @@
         </thead>
         <tbody>
             {% for service in services -%}
-            <tr>
+            <tr class="js-services-service-{{ service.name }}">
                 <td>{{ service.name }}</td>
                 <td>{{ service.description }}</td>
                 <td><a href="{{ service.url }}">{{ service.url }}</a></td>
-                <td>
-                    <button type="button" class="btn btn-default js-services-call-command"
-                            data-service="{{ service.name }}" data-command="start">Start</button>
-                    <button type="button" class="btn btn-default js-services-call-command"
-                            data-service="{{ service.name }}" data-command="stop">Stop</button>
+                <td class="js-services-service-commands">
+                    {% if service.status == 'active' -%}
+                        {{ commands_active(service.name) }}
+                    {% else %}
+                        {{ commands_inactive(service.name) }}
+                    {%- endif %}
                 </td>
             </tr>
             {%- endfor %}
@@ -39,4 +52,8 @@
 
 {% block extra_scripts %}
     {% include 'services/_scripts.html' %}
+{% endblock %}
+
+{% block extra_templates %}
+    {% include 'services/_templates.html' %}
 {% endblock %}
