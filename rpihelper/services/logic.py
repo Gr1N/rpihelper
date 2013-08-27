@@ -48,6 +48,10 @@ def systemctl_ssr_command(command, service, with_sudo=True):
     Execute `systemctl start/stop/restart <service_name>`.
     If output returned we think that this is error.
 
+    NOTE: if you use this function `with_sudo`, you shoud pass to
+    your `sudoers` config, something like this:
+        %http ALL=(ALL) NOPASSWD: ALL
+
     TODO: pass `with_sudo` parameter via app config.
     """
     cmd = 'systemctl %s %s' % (command, service)
@@ -60,6 +64,10 @@ def systemctl_ssr_command(command, service, with_sudo=True):
 def systemctl_status_command(service, with_sudo=True):
     """
     Check service status with `systemctl status <service_name>`.
+
+    NOTE: if you use this function `with_sudo`, you shoud pass to
+    your `sudoers` config, something like this:
+        %http ALL=(ALL) NOPASSWD: ALL
 
     TODO: pass `with_sudo` parameter via app config.
     """
