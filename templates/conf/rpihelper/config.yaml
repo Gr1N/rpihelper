@@ -5,6 +5,8 @@ COMMON: &common
     SECRET_KEY: insecure
 
     SERVICES: []
+    SERVICES_SYSTEMCTL_AVAILABLE: True
+    SERVICES_USE_SUDO: True
 
 DEVELOPMENT: &development
     <<: *common

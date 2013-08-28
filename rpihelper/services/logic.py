@@ -5,6 +5,8 @@ import re
 
 from flask import current_app
 
+from rpihelper.services.decorators import systemctl_available
+
 __all__ = (
     'SystemctlCommands',
     'SystemctlStatuses',
@@ -43,7 +45,8 @@ def get_services_with_status():
     return services
 
 
-def systemctl_ssr_command(command, service, with_sudo=True):
+@systemctl_available(return_value=False)
+def systemctl_ssr_command(command, service):
     """
     Execute `systemctl start/stop/restart <service_name>`.
     If output returned we think that this is error.
@@ -55,13 +58,14 @@ def systemctl_ssr_command(command, service, with_sudo=True):
     TODO: pass `with_sudo` parameter via app config.
     """
     cmd = 'systemctl %s %s' % (command, service)
-    cmd = 'sudo %s' % cmd if with_sudo else cmd
+    cmd = 'sudo %s' % cmd if with_sudo() else cmd
 
     output = getoutput(cmd)
     return bool(output)
 
 
-def systemctl_status_command(service, with_sudo=True):
+@systemctl_available(return_value=SystemctlStatuses.INACTIVE)
+def systemctl_status_command(service):
     """
     Check service status with `systemctl status <service_name>`.
 
@@ -72,7 +76,7 @@ def systemctl_status_command(service, with_sudo=True):
     TODO: pass `with_sudo` parameter via app config.
     """
     cmd = 'systemctl status %s' % service
-    cmd = 'sudo %s' % cmd if with_sudo else cmd
+    cmd = 'sudo %s' % cmd if with_sudo() else cmd
 
     output = getoutput(cmd)
     match = re.search(r'(?<=Active: )\w+', output)
@@ -81,3 +85,7 @@ def systemctl_status_command(service, with_sudo=True):
         return SystemctlStatuses.UNKNOWN
 
     return match.group(0)
+
+
+def with_sudo():
+    return current_app.config.get('SERVICES_USE_SUDO', True)

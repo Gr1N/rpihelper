@@ -143,9 +143,10 @@ class SystemctlSSRCommandLogicTests(TestCase, SystemctlCommandLogicMixin):
     def _test_ssr(self, output, expected_error=False):
         assertMethod = self.assertTrue if expected_error else self.assertFalse
 
-        with self.patch_getoutput(output):
-            error = systemctl_ssr_command('command', 'service')
-            assertMethod(error)
+        with self.app.test_request_context():
+            with self.patch_getoutput(output):
+                error = systemctl_ssr_command('command', 'service')
+                assertMethod(error)
 
     def test_no_error(self):
         self._test_ssr('')
@@ -156,9 +157,10 @@ class SystemctlSSRCommandLogicTests(TestCase, SystemctlCommandLogicMixin):
 
 class SystemctlStatusCommandLogicTests(TestCase, SystemctlCommandLogicMixin):
     def _test_status(self, output, expected_status):
-        with self.patch_getoutput(output):
-            status = systemctl_status_command('service')
-            self.assertEqual(status, expected_status)
+        with self.app.test_request_context():
+            with self.patch_getoutput(output):
+                status = systemctl_status_command('service')
+                self.assertEqual(status, expected_status)
 
     def test_status_active(self):
         self._test_status(SYSTEMCTL_STATUS_ACTIVE_OUTPUT, SystemctlStatuses.ACTIVE)
@@ -171,3 +173,4 @@ class SystemctlStatusCommandLogicTests(TestCase, SystemctlCommandLogicMixin):
 
     def test_no_output(self):
         self._test_status('', SystemctlStatuses.UNKNOWN)
+
