@@ -1,3 +1,2 @@
 include .meta/packages
-include config.yaml.tmpl
 recursive-include rpihelper *
