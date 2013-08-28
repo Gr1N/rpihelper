@@ -26,12 +26,10 @@ def get_boot_time():
 
 
 def get_memory_data(memory):
-    to_mb = lambda b: b / 1024 / 1024
-
     return {
         'percent': memory.percent,
-        'total': to_mb(memory.total),
-        'used': to_mb(memory.used),
+        'total': memory.total,
+        'used': memory.used,
     }
 
 
@@ -43,16 +41,14 @@ def get_cpu_data():
 
 
 def get_disk_data():
-    to_gb = lambda b: b / 1024 / 1024 / 1024
-
     disk_data = []
     for p in psutil.disk_partitions():
         disk_usage = psutil.disk_usage(p.mountpoint)
         disk_data.append({
             'mountpoint': p.mountpoint,
             'percent': disk_usage.percent,
-            'total': to_gb(disk_usage.total),
-            'used': to_gb(disk_usage.used),
+            'total': disk_usage.total,
+            'used': disk_usage.used,
         })
     return disk_data
 
