@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from collections import Counter
-from datetime import datetime
 
 import psutil
 
@@ -16,13 +15,7 @@ __all__ = (
 
 
 def get_boot_time():
-    timestamp = psutil.get_boot_time()
-    days = (datetime.utcnow() - datetime.utcfromtimestamp(timestamp)).days
-
-    return {
-        'timestamp': timestamp,
-        'days': days,
-    }
+    return psutil.get_boot_time()
 
 
 def get_memory_data(memory):

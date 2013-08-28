@@ -19,7 +19,7 @@
         },
         getSystemInfo: function() {
             var onSuccess = _.bind(function(response) {
-                this.setTemplate(this.systemInfoTemplateSelector, response.data);
+                this.setTemplate(this.systemInfoTemplateSelector, this.prepareData(response.data));
 
                 _.delay(_.bind(this.getSystemInfo, this), 2000);
             }, this);
@@ -30,6 +30,40 @@
                     success: onSuccess
                 }
             });
+        },
+        prepareData: function(data) {
+            var prepareMemory = function(memory) {
+                    var gbb = Math.pow(1024, 3);
+                    _.each(['total', 'used'], function(type) {
+                        var bytes = memory[type];
+                        memory[type] = bytes < gbb ? toMb(bytes) : toGb(bytes);
+                    });
+                },
+                toMb = function(bytes) {
+                    return Math.floor(bytes / Math.pow(1024, 2)) + 'Mb';
+                },
+                toGb = function(bytes) {
+                    return Math.floor(bytes / Math.pow(1024, 3)) + 'Gb';
+                };
+
+            data.boot_time = new Date(data.boot_time * 1000).toLocaleString();
+
+            prepareMemory(data.virtual_memory);
+            prepareMemory(data.swap_memory);
+
+            _.each(data.disks, function(disk) {
+                prepareMemory(disk);
+            });
+
+            _.each(data.processes[0], function(process) {
+                var mp = process.memory_percent,
+                    ct = process.cpu_times;
+
+                process.memory_percent = mp ? mp.toString().slice(0, 4) : null;
+                process.cpu_times_system = ct ? ct.system.toString().slice(0, 4) : null;
+            });
+
+            return data;
         }
     });
 

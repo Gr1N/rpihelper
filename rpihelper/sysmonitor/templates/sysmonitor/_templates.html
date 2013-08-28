@@ -1,9 +1,8 @@
 <script type="text/template" id="js-tmpl-sysmonitor-system-info">
     <div class="row">
         <div class="col-lg-6">
-            <h3>Uptime:</h3>
-            <p><strong>Unix timestamp:</strong> <%= boot_time.timestamp %></p>
-            <p><strong>Days:</strong> <%= boot_time.days %></p>
+            <h3>General:</h3>
+            <p><strong>Boot time:</strong> <%= boot_time %></p>
         </div>
         <div class="col-lg-6">
             <h3>CPU:</h3>
@@ -18,14 +17,14 @@
     <div class="row">
         <div class="col-lg-6">
             <h3>RAM:</h3>
-            <p><strong>Total:</strong> <%= virtual_memory.total %>Mb; <strong>Used:</strong> <%= virtual_memory.used %>Mb</p>
+            <p><strong>Total:</strong> <%= virtual_memory.total %>; <strong>Used:</strong> <%= virtual_memory.used %></p>
             <div class="progress progress-striped">
                 <div class="progress-bar progress-bar-info" style="width: <%= virtual_memory.percent %>%"></div>
             </div>
         </div>
         <div class="col-lg-6">
             <h3>SWAP:</h3>
-            <p><strong>Total:</strong> <%= swap_memory.total %>Mb; <strong>Used:</strong> <%= swap_memory.used %>Mb</p>
+            <p><strong>Total:</strong> <%= swap_memory.total %>; <strong>Used:</strong> <%= swap_memory.used %></p>
             <div class="progress progress-striped">
                 <div class="progress-bar progress-bar-info" style="width: <%= swap_memory.percent %>%"></div>
             </div>
@@ -34,7 +33,7 @@
 
     <h3>Disks:</h3>
     <% _.each(disks, function(disk) { %>
-        <p><strong>Mountpoint:</strong> <%= disk.mountpoint %>; <strong>Total:</strong> <%= disk.total %>Gb; <strong>Used:</strong> <%= disk.used %>Gb</p>
+        <p><strong>Mountpoint:</strong> <%= disk.mountpoint %>; <strong>Total:</strong> <%= disk.total %>; <strong>Used:</strong> <%= disk.used %></p>
         <div class="progress progress-striped">
             <div class="progress-bar progress-bar-info" style="width: <%= disk.percent %>%"></div>
         </div>
@@ -65,7 +64,7 @@
                 <td><%= process.nice %></td>
                 <td><%= process.cpu_percent %></td>
                 <td><%= process.memory_percent %></td>
-                <td>{#<%= process.cpu_times.system %>#}</td>
+                <td><%= process.cpu_times_system %></td>
                 <td><%= process.name %></td>
             </tr>
             <% }); %>
