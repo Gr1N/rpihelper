@@ -14,6 +14,7 @@ from fabric.utils import abort
 __all__ = (
     'deploy',
     'undeploy',
+    'update',
 )
 
 
@@ -44,6 +45,13 @@ def undeploy(config_file):
     config = load_and_verify_config(config_file)
     if config:
         undeploy_project(config)
+
+
+@task
+def update(config_file):
+    config = load_and_verify_config(config_file)
+    if config:
+        update_project(config)
 
 
 def load_and_verify_config(config_file):
@@ -80,6 +88,11 @@ def deploy_project(config):
 def undeploy_project(config):
     home = config['app']['home']
     destroy_environment(home)
+
+
+def update_project(config):
+    home = config['app']['home']
+    deploy_configurations(home, config)
 
 
 def ensure_environment(home, config):

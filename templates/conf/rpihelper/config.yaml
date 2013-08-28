@@ -10,6 +10,9 @@ DEVELOPMENT: &development
     <<: *common
     DEBUG: True
 
+STAGING: &staging
+    <<: *common
+
     SERVICES:
     - {
         name: transmission,

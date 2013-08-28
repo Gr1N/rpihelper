@@ -76,7 +76,7 @@ def configure_logging(app):
         # Skip debug and test mode. Just check standard output.
         return
 
-    import logging
+    import logging, logging.handlers
 
     # Set info level on logger, which might be overwritten by handers.
     # Suppress DEBUG messages.

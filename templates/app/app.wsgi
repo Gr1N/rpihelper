@@ -7,6 +7,7 @@ import sys
 BASE_DIR = os.path.join(os.path.dirname(__file__))
 
 
+os.environ['FLASK_ENV'] = 'staging'
 os.environ['FLASK_CONFIG_FILE'] = '{{ app.home }}conf/rpihelper/config.yaml'
 
 
