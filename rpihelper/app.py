@@ -10,7 +10,7 @@ from rpihelper.config import Flask
 from rpihelper.rpihelper import rpihelper
 from rpihelper.services import services
 from rpihelper.sysmonitor import sysmonitor
-from rpihelper.utils import INSTANCE_FOLDER_PATH
+from rpihelper.utils import INSTANCE_FOLDER_PATH, make_dir
 
 __all__ = (
     'create_app',
@@ -38,6 +38,7 @@ def create_app(blueprints=None, testing=False):
     configure_template_filters(app)
     configure_hook(app)
     configure_error_handlers(app)
+    configure_additional_directories(app)
 
     return app
 
@@ -51,6 +52,7 @@ def configure_app(app):
 
 
 def configure_extensions(app):
+    # Flask-WTF
     csrf = CsrfProtect()
     csrf.init_app(app)
 
@@ -116,3 +118,9 @@ def configure_error_handlers(app):
     @app.errorhandler(500)
     def server_error_page(error):
         return render_template('errors/500.html'), 500
+
+
+def configure_additional_directories(app):
+    # Configuure Dropbox directory
+    make_dir(app.config['DROPBOX_DIRECTORY'])
+    make_dir(app.config['TRANSMISSION_DROPBOX_DIRECORY'])

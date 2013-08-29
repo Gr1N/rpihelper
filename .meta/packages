@@ -1,6 +1,10 @@
 Flask
 Flask-Script
 Flask-WTF
+anyjson
+amqp
 blinker
+celery
+transmissionrpc
 psutil
 PyYAML
