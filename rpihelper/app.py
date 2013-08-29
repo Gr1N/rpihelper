@@ -123,4 +123,4 @@ def configure_error_handlers(app):
 def configure_additional_directories(app):
     # Configuure Dropbox directory
     make_dir(app.config['DROPBOX_DIRECTORY'])
-    make_dir(app.config['TRANSMISSION_DROPBOX_DIRECORY'])
+    make_dir(app.config['TRANSMISSION_DROPBOX_DIRECTORY'])
