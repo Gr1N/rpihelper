@@ -4,9 +4,26 @@ COMMON: &common
     TESTING: False
     SECRET_KEY: insecure
 
+    DROPBOX_DIRECTORY: ''
+
+    CELERY_BROKER_URL: 'amqp://rpihelper:rpihelper@localhost:5672//rpihelper'
+    CELERY_RESULT_BACKEND: 'redis://localhost:6379'
+    CELERYBEAT_SCHEDULE: {
+        transmission-check-torrent-files: {
+            task: 'rpihelper.transmission.tasks.check_torrent_files',
+            schedule: 3600
+        }
+    }
+
     SERVICES: []
     SERVICES_SYSTEMCTL_AVAILABLE: True
     SERVICES_USE_SUDO: True
+
+    TRANSMISSION_ADDRESS: '{{ app.http.host }}'
+    TRANSMISSION_PORT: '9091'
+    # Relative to `DROPBOX_DIRECTORY`
+    TRANSMISSION_DROPBOX_TORRENTS_FOLDER: ''
+    TRANSMISSION_TIMEOUT: 1.0
 
 DEVELOPMENT: &development
     <<: *common
@@ -24,7 +41,7 @@ STAGING: &staging
     - {
         name: vsftpd,
         description: 'FTP web interface',
-        url: 'ftp://192.168.1.7/'
+        url: 'ftp://{{ app.http.host }}/'
       }
 
 TESTING: &testing
