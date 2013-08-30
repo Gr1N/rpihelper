@@ -20,7 +20,7 @@ def check_torrent_files():
         current_app.logger.info('No connetion to remote transmission, stop task.')
         return
 
-    walk_directory = current_app.config['TRANSMISSION_DROPBOX_DIRECTORY']
+    walk_directory = current_app.config['TRANSMISSION_DROPBOX_TORRENTS_DIRECTORY']
     for dirpath, diranames, filenames in os.walk(walk_directory):
         for filename in filenames:
             file_path = os.path.join(dirpath, filename)

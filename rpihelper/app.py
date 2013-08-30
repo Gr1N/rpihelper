@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import os.path
 
 from flask_wtf.csrf import CsrfProtect
 
@@ -121,6 +122,12 @@ def configure_error_handlers(app):
 
 
 def configure_additional_directories(app):
-    # Configuure Dropbox directory
+    # Make Dropbox directory
     make_dir(app.config['DROPBOX_DIRECTORY'])
-    make_dir(app.config['TRANSMISSION_DROPBOX_DIRECTORY'])
+
+    # Make Dropbox transmission directory
+    app.config['TRANSMISSION_DROPBOX_TORRENTS_DIRECTORY'] = os.path.join(
+        app.config['DROPBOX_DIRECTORY'],
+        app.config['TRANSMISSION_DROPBOX_TORRENTS_FOLDER']
+    )
+    make_dir(app.config['TRANSMISSION_DROPBOX_TORRENTS_DIRECTORY'])
