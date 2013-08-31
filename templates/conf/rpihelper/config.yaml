@@ -4,7 +4,6 @@ COMMON: &common
     TESTING: False
     SECRET_KEY: insecure
 
-    DROPBOX_DIRECTORY: ''
     DROPBOX_APP_KEY: ''
     DROPBOX_APP_SECRET: ''
     DROPBOX_APP_TOKEN: ''
@@ -24,7 +23,6 @@ COMMON: &common
 
     TRANSMISSION_ADDRESS: '{{ app.http.host }}'
     TRANSMISSION_PORT: '9091'
-    # Relative to `DROPBOX_DIRECTORY`
     TRANSMISSION_DROPBOX_TORRENTS_FOLDER: ''
     TRANSMISSION_TIMEOUT: 1.0
 

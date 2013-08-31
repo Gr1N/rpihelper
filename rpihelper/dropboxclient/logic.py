@@ -75,3 +75,16 @@ class Client(object):
             - A dictionary containing the metadata of the just deleted file or None.
         """
         return self.api_client.file_delete(path)
+
+    @command(exception_return=None)
+    def file_url(self, path):
+        """
+        Get shared url for file.
+
+        Args:
+            - ``path``: The path of the file.
+
+        Returns:
+            - Shared url.
+        """
+        return self.api_client.share(path)['url']

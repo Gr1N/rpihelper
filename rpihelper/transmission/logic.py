@@ -22,10 +22,10 @@ def transmissionrpc_client():
         return None
 
 
-def transmissionrpc_add_torrent(tc, file_path):
+def transmissionrpc_add_torrent(tc, file_url):
     try:
         tc.add_torrent(
-            'file://%s' % file_path,
+            file_url,
             timeout=current_app.config['TRANSMISSION_TIMEOUT']
         )
         return True
