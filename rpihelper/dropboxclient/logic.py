@@ -14,18 +14,14 @@ __all__ = (
 
 
 class Client(object):
-    app_key = current_app.config['DROPBOX_APP_KEY']
-    app_sercret = current_app.config['DROPBOX_APP_SECRET']
-    app_token = current_app.config['DROPBOX_APP_TOKEN']
-    api_client = None
-
     def __init__(self):
-        if self.app_token:
-            self.api_client = client.DropboxClient(self.app_token)
+        app_token = current_app.config['DROPBOX_APP_TOKEN']
+        self.api_client = client.DropboxClient(app_token) if app_token else None
 
     def login(self):
         flow = client.DropboxOAuth2FlowNoRedirect(
-            self.app_key, self.app_sercret
+            current_app.config['DROPBOX_APP_KEY'],
+            current_app.config['DROPBOX_APP_SECRET']
         )
         authorize_url = flow.start()
         sys.stdout.write('1. Go to: %s \n' % authorize_url)
@@ -40,7 +36,7 @@ class Client(object):
             sys.stdout.write('Error: %s\n' % e)
 
     @command(exception_return=[])
-    def ls_files(self, path):
+    def folder(self, path):
         """
         Retrieve filenames from folder.
 
