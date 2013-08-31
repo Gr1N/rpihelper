@@ -5,6 +5,9 @@ COMMON: &common
     SECRET_KEY: insecure
 
     DROPBOX_DIRECTORY: ''
+    DROPBOX_APP_KEY: ''
+    DROPBOX_APP_SECRET: ''
+    DROPBOX_APP_TOKEN: ''
 
     CELERY_BROKER_URL: 'amqp://rpihelper:rpihelper@localhost:5672//rpihelper'
     CELERY_RESULT_BACKEND: 'redis://localhost:6379'

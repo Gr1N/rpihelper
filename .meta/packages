@@ -5,6 +5,7 @@ anyjson
 amqp
 blinker
 celery
+dropbox
 transmissionrpc
 psutil
 PyYAML
