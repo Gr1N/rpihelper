@@ -11,7 +11,7 @@ from rpihelper.config import Flask
 from rpihelper.rpihelper import rpihelper
 from rpihelper.services import services
 from rpihelper.sysmonitor import sysmonitor
-from rpihelper.utils import INSTANCE_FOLDER_PATH, make_dir
+from rpihelper.utils import INSTANCE_FOLDER_PATH
 
 __all__ = (
     'create_app',

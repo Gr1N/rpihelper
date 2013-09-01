@@ -7,5 +7,6 @@ blinker
 celery
 dropbox
 transmissionrpc
+redis
 psutil
 PyYAML
