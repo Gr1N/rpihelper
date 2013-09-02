@@ -8,6 +8,10 @@ with open('.meta/packages') as reqs:
     install_requires = reqs.read().split('\n')
 
 
+with open('.meta/links') as deps:
+    dependency_links = deps.read().split('\n')
+
+
 setup(
     name='rpihelper',
     version='0.0.2e',
@@ -18,6 +22,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=install_requires,
+    dependency_links=dependency_links,
     classifiers=[
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',

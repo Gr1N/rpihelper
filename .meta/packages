@@ -8,5 +8,5 @@ celery
 dropbox
 transmissionrpc
 redis
-hg+https://code.google.com/p/psutil/
+pytz==2013b
 PyYAML
