@@ -44,4 +44,5 @@ nosetests.xml
 # Other
 .DS_Store
 config_local.yaml
+config.yaml
 celerybeat-schedule

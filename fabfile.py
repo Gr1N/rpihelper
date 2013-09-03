@@ -30,6 +30,7 @@ INITIAL_DIRS = (
     'conf/rpihelper',
     'conf/httpd',
     'conf/nginx',
+    'conf/supervisord',
 )
 
 

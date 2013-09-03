@@ -4,12 +4,15 @@ __shared:
     root: /srv/http/
     httpd_log_dir: '/var/log/httpd'
     nginx_log_dir: '/var/log/nginx'
+    supervisord_log_dir: '/var/log/supervisor'
     configurations:
         - app/app.wsgi
         - conf/rpihelper/config.yaml
         - conf/httpd/vhost.conf
         - conf/nginx/app.conf
         - conf/nginx/vhost.conf
+        - conf/supervisord/celeryd.conf
+        - conf/supervisord/celerybeat.conf
 rpihelper:
     home: /srv/http/rpihelper/
     pipgit: git+git://github.com/Gr1N/rpihelper.git
