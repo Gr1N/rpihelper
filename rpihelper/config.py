@@ -6,8 +6,6 @@ import yaml
 
 from flask import Flask as BaseFlask, Config as BaseConfig
 
-from rpihelper.utils import make_dir, INSTANCE_FOLDER_PATH
-
 __all__ = (
     'Flask',
 )
@@ -22,10 +20,6 @@ class Config(BaseConfig):
         super(Config, self).__init__(*args, **kwargs)
 
         self['PROJECT_ROOT'] = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-
-        LOG_FOLDER = os.path.join(INSTANCE_FOLDER_PATH, 'logs')
-        self['LOG_FOLDER'] = LOG_FOLDER
-        make_dir(LOG_FOLDER)
 
     def from_yaml(self, config_file):
         env = os.environ.get('FLASK_ENV', 'development').upper()

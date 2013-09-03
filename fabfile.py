@@ -31,6 +31,7 @@ INITIAL_DIRS = (
     'conf/httpd',
     'conf/nginx',
     'conf/supervisord',
+    'logs',
 )
 
 

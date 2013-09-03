@@ -11,7 +11,6 @@ from rpihelper.config import Flask
 from rpihelper.rpihelper import rpihelper
 from rpihelper.services import services
 from rpihelper.sysmonitor import sysmonitor
-from rpihelper.utils import INSTANCE_FOLDER_PATH
 
 __all__ = (
     'create_app',
@@ -31,7 +30,7 @@ def create_app(blueprints=None, testing=False):
     if not blueprints:
         blueprints = DEFAULT_BLUEPRINTS
 
-    app = Flask(APP_NAME, instance_path=INSTANCE_FOLDER_PATH, instance_relative_config=True)
+    app = Flask(APP_NAME)
     configure_app(app)
     configure_blueprints(app, blueprints)
     configure_extensions(app)
@@ -85,7 +84,7 @@ def configure_logging(app):
     # Suppress DEBUG messages.
     app.logger.setLevel(logging.INFO)
 
-    info_log = os.path.join(app.config['LOG_FOLDER'], 'info.log')
+    info_log = os.path.join(app.config['LOG_DIR'], 'info.log')
     info_file_handler = logging.handlers.RotatingFileHandler(info_log, maxBytes=100000, backupCount=10)
     info_file_handler.setLevel(logging.INFO)
     info_file_handler.setFormatter(logging.Formatter(
