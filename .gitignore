@@ -1,4 +1,4 @@
-.hg
+.hg*
 *.py[cod]
 
 # C extensions
