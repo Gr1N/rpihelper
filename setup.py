@@ -14,7 +14,7 @@ with open('.meta/links') as deps:
 
 setup(
     name='rpihelper',
-    version='0.0.2e',
+    version='0.0.2',
     author='Nikita Grishko',
     author_email='grin.minsk@gmail.com',
     url='https://github.com/Gr1N/rpihelper',
