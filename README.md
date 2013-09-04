@@ -5,7 +5,7 @@ Raspberry Pi Helper (RPiHelper)
 
 
 Features
-________
+--------
 
 * System monitoring
 * Services management (via `systemd`)
