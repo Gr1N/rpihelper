@@ -23,7 +23,7 @@ Development
 Deployment
 ----------
 
-Use *fabfile.py* and *nginx*/*httpd*/*supervisor* configs from repo for deployment.
+Use `fabfile.py` and configs (`nginx`, `httpd`, `supervisor`) from repo for deployment.
 
 
 License
