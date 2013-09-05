@@ -1,10 +1,4 @@
-{% if config.DEBUG -%}
-<script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='plugins/js/jquery/jquery-2.0.3.js') }}"></script>
-<script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='plugins/js/underscore/underscore.js') }}"></script>
-<script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='plugins/js/backbone/backbone.js') }}"></script>
-{% else %}
 <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='plugins/js/jquery/jquery-2.0.3.min.js') }}"></script>
 <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='plugins/js/underscore/underscore-min.js') }}"></script>
 <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='plugins/js/backbone/backbone-min.js') }}"></script>
-{%- endif %}
 <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='plugins/js/bootstrap/bootstrap.min.js') }}"></script>
