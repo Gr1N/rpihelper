@@ -3,16 +3,28 @@
         <div class="col-lg-6">
             <h3>General:</h3>
             <p><strong>Boot time:</strong> <%= boot_time %></p>
+            <p><strong>Temperature:</strong> <%= temperature %></p>
         </div>
         <div class="col-lg-6">
-            <h3>CPU:</h3>
+            <h3>Voltage:</h3>
+            <p><strong>Core:</strong> <%= voltage.core %></p>
+            <p><strong>I/O:</strong> <%= voltage.io %></p>
+            <p><strong>PHY:</strong> <%= voltage.phy %></p>
+            {#<h3>CPU:</h3>
             <% _.each(cpu, function(c) { %>
                 <div class="progress progress-striped">
                     <div class="progress-bar progress-bar-info" style="width: <%= c %>%"></div>
                 </div>
-            <% }); %>
+            <% }); %>#}
         </div>
     </div>
+
+    <h3>CPU:</h3>
+    <% _.each(cpu, function(c) { %>
+        <div class="progress progress-striped">
+            <div class="progress-bar progress-bar-info" style="width: <%= c %>%"></div>
+        </div>
+    <% }); %>
 
     <div class="row">
         <div class="col-lg-6">

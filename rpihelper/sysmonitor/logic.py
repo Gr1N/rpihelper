@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from collections import Counter
+import re
+from subprocess import getoutput
 
 import psutil
 
@@ -10,6 +12,8 @@ __all__ = (
     'get_cpu_data',
     'get_disk_data',
     'get_processes_data',
+    'get_temperature',
+    'get_voltage',
     'get_system_info',
 )
 
@@ -76,6 +80,40 @@ def get_processes_data():
     return processes, dict(processes_status)
 
 
+def get_vcgencmd(*commands):
+    """
+    Get information about onboard hardware sensors.
+    """
+    return getoutput('/opt/vc/bin/vcgencmd %s' % ' '.join(commands))
+
+
+def get_temperature():
+    """
+    Temperatures sensors for the board itself are including as part of the
+    `raspberrypi-firmware-tools` package.
+    """
+    output = get_vcgencmd('measure_temp')
+    match = re.match(r'^temp\=([0-9.]+\'C)$', output)
+    return match.group(1) if match else None
+
+
+def get_voltage():
+    """
+    Voltage sensors for the board itself are including as part of the
+    `raspberrypi-firmware-tools` package.
+    """
+    def voltage(sensor_id):
+        output = get_vcgencmd('measure_volts', sensor_id)
+        match = re.match(r'^volt\=([0-9.]+V)$', output)
+        return match.group(1) if match else None
+
+    return {
+        'core': voltage('sdram_c'),
+        'io': voltage('sdram_i'),
+        'phy': voltage('sdram_p'),
+    }
+
+
 def get_system_info():
     return {
         'boot_time': get_boot_time(),
@@ -84,4 +122,6 @@ def get_system_info():
         'cpu': get_cpu_data(),
         'disks': get_disk_data(),
         'processes': get_processes_data(),
+        'temperature': get_temperature(),
+        'voltage': get_voltage(),
     }

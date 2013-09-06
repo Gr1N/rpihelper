@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
+from unittest.mock import patch
+
 from flask import json
 
-from rpihelper.test import ViewTestCase
+from rpihelper.sysmonitor.logic import get_temperature, get_voltage
+from rpihelper.test import TestCase, ViewTestCase
 
 __all__ = (
     'IndexViewTests',
     'SystemInfoViewTests',
+
+    'GetTemperatureLogicTests',
 )
 
 
@@ -46,6 +51,50 @@ class SystemInfoViewTests(ViewTestCase):
                 'cpu',
                 'disks',
                 'processes',
+                'temperature',
+                'voltage',
             ]),
             sorted(list(data.keys()))
         )
+
+
+class GetTemperatureLogicTests(TestCase):
+    def _test_temperature(self, vcgencmd_output):
+        with patch('rpihelper.sysmonitor.logic.get_vcgencmd',
+                   new=lambda *args: vcgencmd_output):
+            return get_temperature()
+
+    def test_ok(self):
+        vcgencmd_output = 'temp=42\'C'
+        temperature = self._test_temperature(vcgencmd_output)
+        self.assertEqual(temperature, vcgencmd_output.split('=')[-1])
+
+    def test_bad_output(self):
+        temperature = self._test_temperature('/bad/output')
+        self.assertIsNone(temperature)
+
+
+class GetVoltageLogicTests(TestCase):
+    def _test_voltage(self, vcgencmd_output):
+        with patch('rpihelper.sysmonitor.logic.get_vcgencmd',
+                   new=lambda *args: vcgencmd_output):
+            voltage = get_voltage()
+            self.assertListEqual(
+                sorted(['core', 'io', 'phy',]),
+                sorted(list(voltage.keys()))
+            )
+
+            return voltage
+
+    def test_ok(self):
+        vcgencmd_output = 'volt=1.20V'
+        voltage = self._test_voltage(vcgencmd_output)
+
+        for volt in voltage.values():
+            self.assertEqual(volt, vcgencmd_output.split('=')[-1])
+
+    def test_bad_output(self):
+        voltage = self._test_voltage('/bad/output')
+
+        for volt in voltage.values():
+            self.assertIsNone(volt)
