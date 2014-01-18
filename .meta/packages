@@ -8,5 +8,6 @@ celery==3.0.23
 dropbox==1.6
 pytz==2013b
 PyYAML==3.10
+psutil==1.2.1
 redis==2.8.0
 transmissionrpc==0.10
