@@ -7,8 +7,8 @@ import sys
 BASE_DIR = os.path.join(os.path.dirname(__file__))
 
 
-os.environ['FLASK_ENV'] = 'staging'
-os.environ['FLASK_CONFIG_FILE'] = '{{ app.home }}conf/rpihelper/config.yaml'
+os.environ['FLASK_ENV'] = '{{ app.environment }}'
+os.environ['FLASK_CONFIG_FILE'] = '{{ app.config }}'
 
 
 activate_this = os.path.join(BASE_DIR, 'env/bin/activate_this.py')

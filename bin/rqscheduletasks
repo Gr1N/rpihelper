@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+
+from datetime import datetime
+
+from rq import use_connection
+from rq_scheduler import Scheduler
+
+from rpihelper import create_app
+from rpihelper.transmission.tasks import check_torrent_files
+
+__all__ = (
+    'current_app',
+)
+
+
+current_app = create_app()
+
+
+use_connection()
+scheduler = Scheduler(current_app.config['RQ_QUEUE_NAME'])
+
+scheduled_jobs = scheduler.connection.zrange(scheduler.scheduled_jobs_key, 0, -1)
+for job in scheduled_jobs:
+    scheduler.connection.delete('rq:job:{0}'.format(job.decode()))
+scheduler.connection.delete(scheduler.scheduled_jobs_key)
+
+scheduler.schedule(
+    scheduled_time=datetime.utcnow(),
+    func=check_torrent_files,
+    interval=current_app.config['RQ_SCHEDULER_JOB_INTERVAL'],
+)

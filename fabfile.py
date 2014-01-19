@@ -7,7 +7,7 @@ import time
 import yaml
 
 from fabric.api import task, run, cd
-from fabric.context_managers import prefix
+from fabric.context_managers import prefix, shell_env
 from fabric.contrib.files import exists, upload_template
 from fabric.utils import abort
 
@@ -15,6 +15,8 @@ __all__ = (
     'deploy',
     'undeploy',
     'update',
+
+    'schedule_tasks',
 )
 
 
@@ -54,6 +56,18 @@ def update(config_file):
     config = load_and_verify_config(config_file)
     if config:
         update_project(config)
+
+
+@task
+def schedule_tasks(config_file):
+    config = load_and_verify_config(config_file)
+    if config:
+        home = config['app']['home']
+        with cd(home):
+            with prefix('source %s' % VIRTUALENV_ACTIVATE):
+                app = config['app']
+                with shell_env(FLASK_ENV=app['environment'], FLASK_CONFIG_FILE=app['config']):
+                    run('rqscheduletasks')
 
 
 def load_and_verify_config(config_file):

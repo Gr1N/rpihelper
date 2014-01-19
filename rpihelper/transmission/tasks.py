@@ -2,11 +2,11 @@
 
 from tempfile import NamedTemporaryFile
 
+from rpihelper import create_app
 from rpihelper.dropboxclient.logic import Client as DropBoxClient
 from rpihelper.transmission.logic import (
     transmissionrpc_client, transmissionrpc_add_torrent,
 )
-from rpihelper.redisq import current_app
 
 __all__ = (
     'check_torrent_files',
@@ -30,3 +30,6 @@ def check_torrent_files():
             current_app.logger.info('Successfully added torrent "%s".' % f)
         else:
             current_app.logger.info('Torrent "%s" not added, skip it.' % f)
+
+
+current_app = create_app()

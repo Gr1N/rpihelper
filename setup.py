@@ -24,4 +24,7 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
     ],
+    scripts=[
+        'bin/rqscheduletasks',
+    ],
 )
