@@ -45,4 +45,3 @@ nosetests.xml
 .DS_Store
 config_local.yaml
 config.yaml
-celerybeat-schedule
