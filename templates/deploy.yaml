@@ -11,8 +11,7 @@ __shared:
         - conf/httpd/vhost.conf
         - conf/nginx/app.conf
         - conf/nginx/vhost.conf
-        - conf/supervisord/celeryd.conf
-        - conf/supervisord/celerybeat.conf
+        - conf/supervisord/rqworker.conf
 rpihelper:
     home: /srv/http/rpihelper/
     pipgit: git+git://github.com/Gr1N/rpihelper.git
