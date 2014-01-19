@@ -12,6 +12,7 @@ __shared:
         - conf/nginx/app.conf
         - conf/nginx/vhost.conf
         - conf/supervisord/rqworker.conf
+        - conf/supervisord/rqscheduler.conf
 rpihelper:
     home: /srv/http/rpihelper/
     environment: staging

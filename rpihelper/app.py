@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import functools
 import os
 import os.path
 
@@ -26,6 +27,7 @@ DEFAULT_BLUEPRINTS = (
 )
 
 
+@functools.lru_cache()
 def create_app(blueprints=None, testing=False):
     if not blueprints:
         blueprints = DEFAULT_BLUEPRINTS

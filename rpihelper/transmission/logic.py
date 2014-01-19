@@ -2,7 +2,7 @@
 
 import transmissionrpc
 
-from rpihelper.redisq import current_app
+from rpihelper import create_app
 
 __all__ = (
     'transmissionrpc_client',
@@ -32,3 +32,6 @@ def transmissionrpc_add_torrent(tc, file_url):
     except transmissionrpc.error.TransmissionError as e:
         current_app.logger.error(e)
         return False
+
+
+current_app = create_app()
