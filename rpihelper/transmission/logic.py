@@ -2,7 +2,7 @@
 
 import transmissionrpc
 
-from rpihelper.celery import current_app
+from rpihelper.redisq import current_app
 
 __all__ = (
     'transmissionrpc_client',

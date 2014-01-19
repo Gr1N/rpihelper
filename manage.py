@@ -12,18 +12,6 @@ manager = Manager(app)
 
 
 @manager.command
-@manager.option('-l', '--loglevel', help='Celery worker logging level')
-def celery_worker(loglevel='INFO'):
-    os.system('celery -A rpihelper.transmission.tasks worker -l %s' % loglevel)
-
-
-@manager.command
-@manager.option('-l', '--loglevel', help='Celery beat logging level')
-def celery_beat(loglevel='INFO'):
-    os.system('celery -A rpihelper.transmission.tasks beat -l %s' % loglevel)
-
-
-@manager.command
 @manager.option('-tm', '--testmodule', help='Provide test module')
 def test(testmodule='discover'):
     """Run unit tests."""

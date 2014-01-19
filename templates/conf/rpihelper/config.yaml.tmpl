@@ -12,14 +12,9 @@ STAGING: &staging
     DROPBOX_APP_SECRET: ''
     DROPBOX_APP_TOKEN: ''
 
-    CELERY_BROKER_URL: 'amqp://rpihelper:rpihelper@localhost:5672//rpihelper'
-    CELERY_RESULT_BACKEND: 'redis://localhost:6379'
-    CELERYBEAT_SCHEDULE: {
-        transmission-check-torrent-files: {
-            task: 'rpihelper.transmission.tasks.check_torrent_files',
-            schedule: 3600
-        }
-    }
+    RQ_QUEUE_NAME: 'rpihelper'
+    RQ_SCHEDULER_INTERVAL: 5
+    RQ_SCHEDULER_JOB_INTERVAL: 10
 
     SERVICES:
     - {

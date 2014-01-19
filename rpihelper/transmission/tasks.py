@@ -2,18 +2,17 @@
 
 from tempfile import NamedTemporaryFile
 
-from rpihelper.celery import current_app, celery
 from rpihelper.dropboxclient.logic import Client as DropBoxClient
 from rpihelper.transmission.logic import (
     transmissionrpc_client, transmissionrpc_add_torrent,
 )
+from rpihelper.redisq import current_app
 
 __all__ = (
     'check_torrent_files',
 )
 
 
-@celery.task
 def check_torrent_files():
     tc = transmissionrpc_client()
     if not tc:
